@@ -472,13 +472,6 @@ const App = () => {
 
       </main>
 
-      {/* Sticky Bottom CTA for Mobile */}
-      <div className="fixed bottom-0 left-0 w-full bg-gray-900 border-t border-orange-900 p-4 z-50 md:hidden">
-          <Button onClick={handleOpenRitual} className="py-3 text-base shadow-none w-full">
-              QUERO AGORA
-          </Button>
-      </div>
-
       <footer className="max-w-2xl mx-auto px-5 text-center text-gray-600 text-xs py-8">
           <div className="flex justify-center gap-4 mb-4">
               <ShieldCheck className="w-4 h-4" />

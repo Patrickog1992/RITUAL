@@ -31,9 +31,14 @@ export const RitualPage: React.FC<RitualPageProps> = ({ onBack }) => {
   const allAgreed = agreements.faith && agreements.secret && agreements.permanent;
 
   return (
-    <div className="min-h-screen bg-[#0f0a0a] text-gray-200 font-poppins flex justify-center pb-20 pt-8">
+    <div className="min-h-screen bg-[#0f0a0a] text-gray-200 font-poppins flex justify-center pb-20 pt-8 overflow-hidden relative">
       
-      <div className="w-full max-w-md flex flex-col px-5">
+      {/* Background ambient glow */}
+      <div className={`absolute top-0 left-0 w-full h-full pointer-events-none transition-opacity duration-1000 ${flameIntensity ? 'opacity-20' : 'opacity-0'}`}>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-orange-600 rounded-full blur-[100px] animate-pulse"></div>
+      </div>
+
+      <div className="w-full max-w-md flex flex-col px-5 relative z-10">
         
         {/* Back Button (In Flow) */}
         <div className="mb-4 flex justify-start">
@@ -58,7 +63,7 @@ export const RitualPage: React.FC<RitualPageProps> = ({ onBack }) => {
                   <p className="text-xs text-gray-400 mt-1">Marque todas as opções abaixo para liberar o feitiço</p>
                 </div>
                 
-                <div className="space-y-3 bg-gray-900/30 p-4 rounded-xl border border-gray-800">
+                <div className="space-y-3 bg-gray-900/30 p-4 rounded-xl border border-gray-800 backdrop-blur-sm">
                     <label className="flex items-start gap-3 cursor-pointer group select-none">
                         <div className="relative flex items-center pt-1">
                             <input type="checkbox" className="peer sr-only" checked={agreements.faith} onChange={() => setAgreements(prev => ({...prev, faith: !prev.faith}))} />
@@ -91,50 +96,86 @@ export const RitualPage: React.FC<RitualPageProps> = ({ onBack }) => {
                 </div>
             </div>
 
-            {/* Altar */}
+            {/* Altar Area */}
             <div 
-                className={`relative border-2 ${flameIntensity ? 'border-orange-500 bg-orange-950/30' : 'border-orange-900/30 bg-orange-950/10'} rounded-xl p-6 text-center cursor-pointer transition-all duration-500 overflow-hidden group select-none`}
+                className={`relative border transition-all duration-700 rounded-xl p-8 text-center cursor-pointer overflow-hidden group select-none
+                ${flameIntensity 
+                    ? 'border-orange-500/50 bg-[#1a0f0f] shadow-[0_0_30px_rgba(255,80,0,0.15)]' 
+                    : 'border-gray-800 bg-[#0f0a0a] hover:border-orange-900/50'}`}
                 onClick={() => setFlameIntensity(true)}
             >
-                 <div className="relative z-10">
-                     <p className={`text-xs md:text-sm font-bold mb-6 uppercase tracking-widest transition-colors ${flameIntensity ? 'text-orange-200 animate-pulse' : 'text-orange-400/70'}`}>
-                        {flameIntensity ? 'A chama está ardendo...' : 'Clique no altar para a SACERDOTISA chamar o nome dele'}
+                 <div className="relative z-20 flex flex-col items-center">
+                     <p className={`text-xs md:text-sm font-bold mb-8 uppercase tracking-[0.2em] transition-all duration-500 
+                        ${flameIntensity ? 'text-orange-100 drop-shadow-[0_0_8px_rgba(255,165,0,0.8)]' : 'text-gray-500'}`}>
+                        {flameIntensity ? 'A chama sagrada consome o destino' : 'Clique no altar para a sacerdotisa chamar o nome dele'}
                      </p>
                      
-                     <div className="h-40 flex items-end justify-center pb-2 relative">
-                        {/* Altar Graphics */}
-                        <div className="w-48 h-8 bg-gradient-to-t from-gray-900 to-gray-800 rounded-sm absolute bottom-0 shadow-2xl border-t border-gray-700"></div>
-                        <div className="w-56 h-2 bg-[#0a0505] rounded-full absolute -bottom-1 blur-sm"></div>
+                     {/* The Altar Scene */}
+                     <div className="h-48 w-full flex items-end justify-center relative perspective-[500px]">
                         
-                        {/* Flame Container */}
-                        <div className={`transition-all duration-1000 ease-in-out transform origin-bottom ${flameIntensity ? 'scale-150 -translate-y-4 filter brightness-125' : 'scale-90 opacity-80'}`}>
-                           {/* Outer Glow */}
-                           <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-orange-500/20 rounded-full blur-xl transition-all duration-1000 ${flameIntensity ? 'opacity-100 scale-150' : 'opacity-0'}`}></div>
-                           
-                           {/* SVG Flame */}
-                           <svg 
-                             viewBox="0 0 24 24" 
-                             fill="none" 
-                             className={`w-20 h-20 text-orange-500 drop-shadow-[0_0_15px_rgba(255,140,0,0.6)] ${flameIntensity ? 'animate-[bounce_0.5s_infinite]' : 'animate-[pulse_3s_infinite]'}`}
-                           >
-                               <path d="M12 2C12 2 8 8 8 13C8 17 11 19 12 22C13 19 16 17 16 13C16 8 12 2 12 2Z" className="fill-orange-600 animate-[pulse_2s_infinite]" />
-                               <path d="M12 5C12 5 9 10 9 13.5C9 16 10.5 17.5 12 19C13.5 17.5 15 16 15 13.5C15 10 12 5 12 5Z" className="fill-orange-400 animate-[pulse_1.5s_infinite]" />
-                               <path d="M12 8C12 8 10.5 11 10.5 13C10.5 14.5 11 15 12 16C13 15 13.5 14.5 13.5 13C13.5 11 12 8 12 8Z" className="fill-yellow-200 animate-[pulse_0.8s_infinite]" />
-                           </svg>
+                        {/* Magic Circle on Floor */}
+                        <div className={`absolute bottom-0 w-48 h-12 border-2 rounded-[100%] transition-all duration-1000 transform
+                            ${flameIntensity 
+                                ? 'border-orange-500/40 shadow-[0_0_20px_inset_rgba(255,100,0,0.3)] scale-110' 
+                                : 'border-gray-800 scale-90 opacity-30'}`}>
                         </div>
+
+                        {/* Stone Base */}
+                        <div className="w-40 h-8 bg-gradient-to-b from-gray-800 to-black rounded-lg absolute bottom-2 shadow-2xl z-10 flex items-center justify-center border-t border-gray-700">
+                             {/* Runes */}
+                             <div className={`w-full h-[1px] bg-orange-500/50 absolute top-0 blur-[1px] transition-opacity duration-1000 ${flameIntensity ? 'opacity-100' : 'opacity-0'}`}></div>
+                             <div className="flex gap-4 opacity-20">
+                                <span className="text-[8px]">ᚠ</span>
+                                <span className="text-[8px]">ᚢ</span>
+                                <span className="text-[8px]">ᚦ</span>
+                                <span className="text-[8px]">ᚨ</span>
+                             </div>
+                        </div>
+
+                        {/* FIRE CONTAINER */}
+                        <div className={`absolute bottom-8 transition-all duration-1000 ease-in-out z-20 ${flameIntensity ? 'scale-125' : 'scale-50 opacity-60'}`}>
+                            
+                           {/* Outer Glow (Aura) */}
+                           <div className={`absolute -left-10 -top-20 w-20 h-32 bg-orange-600 rounded-full blur-[40px] mix-blend-screen transition-opacity duration-500 ${flameIntensity ? 'opacity-60 animate-pulse' : 'opacity-20'}`}></div>
+
+                           {/* Main Fire Body - Layer 1 (Red/Dark Orange) */}
+                           <div className={`absolute left-[-20px] top-[-60px] w-[40px] h-[60px] bg-gradient-to-t from-red-600 to-orange-600 rounded-[50%] rounded-t-none blur-[10px] animate-pulse origin-bottom
+                                ${flameIntensity ? 'opacity-80' : 'opacity-40'}`}></div>
+
+                           {/* Inner Fire - Layer 2 (Bright Orange) */}
+                           <div className={`absolute left-[-15px] top-[-70px] w-[30px] h-[70px] bg-orange-400 rounded-full rounded-t-none blur-[6px] mix-blend-screen animate-[bounce_1.5s_infinite] origin-bottom
+                                ${flameIntensity ? 'opacity-90' : 'opacity-0'}`}></div>
+
+                           {/* Core - Layer 3 (Yellow/White) */}
+                           <div className={`absolute left-[-10px] top-[-50px] w-[20px] h-[50px] bg-yellow-200 rounded-full blur-[4px] mix-blend-screen animate-pulse
+                                ${flameIntensity ? 'opacity-100' : 'opacity-30'}`}></div>
+                           
+                           {/* White Hot Center */}
+                           <div className={`absolute left-[-5px] top-[-30px] w-[10px] h-[30px] bg-white rounded-full blur-[2px]
+                                ${flameIntensity ? 'opacity-100' : 'opacity-0'}`}></div>
+
+                            {/* Sparks / Particles */}
+                            {flameIntensity && (
+                                <>
+                                    <div className="absolute left-0 top-[-40px] w-1 h-1 bg-yellow-200 rounded-full blur-[1px] animate-[ping_1s_infinite]"></div>
+                                    <div className="absolute left-2 top-[-60px] w-[2px] h-[2px] bg-orange-200 rounded-full blur-[1px] animate-[ping_1.5s_infinite_0.5s]"></div>
+                                    <div className="absolute -left-2 top-[-50px] w-[3px] h-[3px] bg-red-200 rounded-full blur-[1px] animate-[ping_2s_infinite_0.2s]"></div>
+                                </>
+                            )}
+                        </div>
+
                      </div>
                  </div>
             </div>
 
-            {/* Form */}
-            <div className={`space-y-5 transition-all duration-700 ${flameIntensity ? 'opacity-100 translate-y-0' : 'opacity-50 translate-y-2'}`}>
+            {/* Form - Always Visible */}
+            <div className="space-y-5 pt-4">
                 <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase mb-2 tracking-wider">Seu primeiro nome</label>
                     <input 
                         type="text" 
                         placeholder="Digite aqui seu nome" 
-                        disabled={!flameIntensity}
-                        className="w-full bg-[#1a1111] border border-orange-900/30 rounded-lg p-4 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 placeholder-gray-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed" 
+                        className="w-full bg-[#1a1111] border border-orange-900/30 rounded-lg p-4 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 placeholder-gray-700 transition-all" 
                     />
                 </div>
                 <div>
@@ -142,23 +183,19 @@ export const RitualPage: React.FC<RitualPageProps> = ({ onBack }) => {
                     <input 
                         type="text" 
                         placeholder="Digite aqui o nome da pessoa desejada" 
-                        disabled={!flameIntensity}
-                        className="w-full bg-[#1a1111] border border-orange-900/30 rounded-lg p-4 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 placeholder-gray-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed" 
+                        className="w-full bg-[#1a1111] border border-orange-900/30 rounded-lg p-4 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 placeholder-gray-700 transition-all" 
                     />
                 </div>
             </div>
 
             {/* Button */}
             <div className="pt-2">
-                <button 
-                    disabled={!allAgreed || !flameIntensity}
-                    className={`w-full font-bold py-5 px-6 rounded-lg shadow-xl text-lg flex items-center justify-center gap-3 transition-all duration-300
-                    ${(allAgreed && flameIntensity) 
-                        ? 'bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_30px_rgba(34,197,94,0.5)] cursor-pointer animate-pulse border-b-4 border-green-800' 
-                        : 'bg-gray-800 text-gray-500 cursor-not-allowed grayscale'}`}
+                <a 
+                    href="https://pay.kirvano.com/562d86be-b4f9-49fc-b88f-bf16e2fdb785"
+                    className="w-full font-bold py-5 px-6 rounded-lg shadow-xl text-lg flex items-center justify-center gap-3 transition-all duration-500 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_30px_rgba(34,197,94,0.5)] cursor-pointer animate-pulse border-b-4 border-green-800"
                 >
                     <span>👉 QUERO O FEITIÇO AGORA</span>
-                </button>
+                </a>
             </div>
 
             {/* Footer */}
