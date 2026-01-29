@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Flame, ShieldCheck, Lock, Star, AlertTriangle, Clock, Gift, Check } from 'lucide-react';
 import { Button } from './components/Button';
 import { TestimonialCard } from './components/TestimonialCard';
@@ -8,6 +8,13 @@ import { SocialProofPopup } from './components/SocialProofPopup';
 
 const App = () => {
   const [view, setView] = useState<'landing' | 'ritual'>('landing');
+  const [currentDate, setCurrentDate] = useState('');
+
+  useEffect(() => {
+    const date = new Date();
+    const formatted = date.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' });
+    setCurrentDate(formatted);
+  }, []);
 
   const handleOpenRitual = () => {
     window.scrollTo(0, 0);
@@ -35,7 +42,7 @@ const App = () => {
 
       {/* Warning Bar */}
       <div className="bg-red-900/30 text-red-200 text-[10px] md:text-xs py-3 px-4 text-center border-b border-red-900/50 uppercase tracking-widest font-semibold leading-relaxed">
-        ATENÇÃO: O início do ano marca a abertura de um novo ciclo energético. No dia <span className="text-white font-bold underline decoration-red-500">10 de janeiro</span> o Ritual da Chama de 5 Noites atua com força ampliada, acelerando o retorno de um amor perdido ou a atração irresistível de um novo amor, despertando desejo e conexão intensa.
+        ATENÇÃO: O início do ano marca a abertura de um novo ciclo energético. No dia <span className="text-white font-bold underline decoration-red-500">{currentDate}</span> o Ritual da Chama de 5 Noites atua com força ampliada, acelerando o retorno de um amor perdido ou a atração irresistível de um novo amor, despertando desejo e conexão intensa.
       </div>
 
       <main className="max-w-2xl mx-auto px-5 pt-8">
