@@ -191,7 +191,7 @@ export const RitualPage: React.FC<RitualPageProps> = ({ onBack }) => {
             {/* Button */}
             <div className="pt-2">
                 <a 
-                    href="https://pay.kirvano.com/562d86be-b4f9-49fc-b88f-bf16e2fdb785"
+                    href="https://go.perfectpay.com.br/PPU38CQ5LBC"
                     className="w-full font-bold py-5 px-6 rounded-lg shadow-xl text-lg flex items-center justify-center gap-3 transition-all duration-500 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_30px_rgba(34,197,94,0.5)] cursor-pointer animate-pulse border-b-4 border-green-800"
                 >
                     <span>👉 QUERO O FEITIÇO AGORA</span>
